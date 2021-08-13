@@ -8,63 +8,6 @@
 using namespace std;
 
 
-string convertToString(char* a, int size)
-{
-    string s(a);
-    return s;
-}
-
-double StringToFloat(char str[100])
-{
-    double result = 0.0;
-    int index = 0;
-    int temp = 0;
-    int flag = 1;
-    while (str[index] != '\0')
-    {
-        if (str[index] != '.')
-        {
-            temp = int(str[index])- 48;
-            if (temp >= 0 && temp <= 9)
-                {
-                    result = temp+ result*10 ;
-                    index++;
-                }
-                else
-                {
-                    flag = 0;
-                    break;
-                }
-        // temp = 0;
-        }
-        else if(str[index] == '.')
-        {
-            float devider = 10;
-            index += 1;
-            while (str[index] != '\0')
-             {
-                temp = int(str[index])- 48;
-                if (temp >= 0 && temp <= 9)
-                    {
-                        temp = int(str[index])- 48;
-                        if (temp >= 0 && temp <= 9)
-                        {
-                            result = (temp/devider)+ result;
-                            index++;
-                            devider = devider * 10;
-                        }
-                        else
-                        {
-                            flag = 0;
-                            break;
-                        }
-                    }
-             }
-        }
-    }
-    return result;
-}
-
 int main()
 { 
   //ofstream myfile; 
