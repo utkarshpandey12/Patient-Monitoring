@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 { 
-  //ofstream myfile; 
+  ofstream myfile; 
   int serial_port;
   char input;
   //char input1;
@@ -45,24 +45,37 @@ int main()
        { 
          if (count_avg>9)
          {
-           
+
          ecg_avg = f1/10;
          rr_avg = f2/10;
+         
+         if (array_full==10){
+           array_full = 0;
+         }
          if (array_full<10){
            x[array_full][0] = ecg_avg;
            x[array_full][1] = rr_avg;
+           array_full++;
            cout<<x[0][0]<<" "<<x[0][1]<<endl;
+           myfile.open ("ecg.txt");
+           for (int i = 0; i < 10; i++)
+            {
+              for (int j = 0; j < 2; j++)
+               {
+                myfile<<x[i][j];
+                myfile<<',';
+
+               }
+               myfile<<endl;
+
+            }
+
+           myfile.close();
          }
          f1 = 0.0;
          f2 = 0.0;
          count_avg = 0;
-         if (array_full<10){
-             array_full++;
-           }
-         if (array_full==10){
-           array_full = 0;
-         }
-           
+               
          } 
          
          array[0] = '\0';
