@@ -77,6 +77,7 @@ int main()
  int index = 0;
  int flag = 0;
  int count_avg = 0;
+ int array_full = 0;
 
  //string array_string;
  //int buffer_size = 0;
@@ -88,6 +89,9 @@ int main()
  char temp2[15];
  double f1, f2;
  double ecg_avg , rr_avg;
+ double x[10][2] = {{0.0,0.0},{0.0,0.0},{0.0,0.0},
+      {0.0,0.0},{0.0,0.0},{0.0,0.0},{0.0,0.0},
+          {0.0,0.0},{0.0,0.0},{0.0,0.0}};
  //string s_a;
 
  while (1) 
@@ -98,9 +102,24 @@ int main()
        { 
          if (count_avg>9)
          {
+           
+         ecg_avg = f1/10;
+         rr_avg = f2/10;
+         if (array_full<10){
+           x[array_full][0] = ecg_avg;
+           x[array_full][1] = rr_avg;
+           cout<<x[0][0]<<" "<<x[0][1]<<endl;
+         }
+         f1 = 0.0;
+         f2 = 0.0;
          count_avg = 0;
-         ecg_avg = 0;
-         rr_avg = 0;
+         if (array_full<10){
+             array_full++;
+           }
+         if (array_full==10){
+           array_full = 0;
+         }
+           
          } 
          
          array[0] = '\0';
@@ -150,11 +169,9 @@ int main()
         }
         temp2[cnt] = '\0';
         //cout<<temp1<<" "<<temp2<<endl;
-        f1 = atof (temp1);
-        f2 = atof (temp2);
+        f1 += atof (temp1);
+        f2 += atof (temp2);
         //cout<<f1<<" "<<f2<<endl;
-        ecg_avg +=f1;
-        rr_avg += f2;
         count_avg++;
 
 
