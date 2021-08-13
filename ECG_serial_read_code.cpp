@@ -55,7 +55,8 @@ int flag = 0;
           //  cout<<input;
          }
         array[n]='\0';
-        
+        index = 0;
+        cnt = 0;
         //int buffer_size = sizeof(array) / sizeof(char);
         while (array[index]!='\0')
         { 
@@ -73,11 +74,13 @@ int flag = 0;
           if (array[index]==','){
             cnt = 0;
             flag = 1;
+            temp1[index] = '\0';
 
           }
 
 
         }
+        temp2[cnt] = '\0';
         
 
         cout<<temp1<<temp2<<endl;
