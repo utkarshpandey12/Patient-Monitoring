@@ -61,13 +61,15 @@ int main()
            for (int i = 0; i < 10; i++)
             {
               for (int j = 0; j < 2; j++)
-               {
+               { 
+                if (j==0){
                 myfile<<x[i][j];
-                myfile<<',';
-
+                myfile<<',';}
+                else{
+                  myfile<<x[i][j]<<endl;
+                }
                }
-               myfile<<endl;
-
+               //myfile<<endl;
             }
 
            myfile.close();
