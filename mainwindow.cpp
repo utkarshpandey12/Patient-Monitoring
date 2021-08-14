@@ -4,6 +4,8 @@
 #include <fstream>
 #include <string>
 #include <bits/stdc++.h>
+#include <chrono>
+using namespace std::chrono;
 using namespace std;
 
 MainWindow::MainWindow(QMainWindow *parent) :
@@ -61,7 +63,7 @@ MainWindow::MainWindow(QMainWindow *parent) :
    //ui->widget_graph->yAxis->rescale(true);
   // ui->widget_graph->yAxis->setTickStep(25);// The size of the value is half of the y-axis, set the scale interval
    ui->widget_graph->yAxis->setLabelColor(QColor(0, 160, 230)); //Set the text color
-   ui->widget_graph->yAxis->setRange(100,400); //Y axis range
+   //ui->widget_graph->yAxis->setRange(100,400); //Y axis range
 
        ui->widget_graph->xAxis2-> setTicks(false); //Do not display the axis
        ui->widget_graph->yAxis2-> setTicks(false); //Do not display the axis
@@ -71,9 +73,10 @@ MainWindow::MainWindow(QMainWindow *parent) :
     value1=1;
     val1 = 0;
     key=0;
+
     QTimer *dataTimer = new QTimer(this);
     connect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
-    dataTimer->start(0);
+    dataTimer->start(280);
 }
 MainWindow::~MainWindow()
 {
@@ -82,33 +85,74 @@ MainWindow::~MainWindow()
 
 void MainWindow::realtimeDataSlot()
 {
-    key++;
+    //key++;
+    //double plt[250];
+    //int cnt = 0;
+    //int len_array = 0;
 
-    static double lastPointKey = 0;
-    string line;
+    //static double lastPointKey = 0;
+    //string line;
+    vector<string> v;
     ifstream myfile ("/home/pi/Downloads/testc/ecg.txt");
+    string line;
+    try{
+    //auto start = high_resolution_clock::now();
     if (myfile.is_open())
       {
+
         while ( getline (myfile,line) )
         {
-          //cout << line << '\n';
+
+          cout<<line<<endl;
+
+          stringstream ss(line);
+          while (ss.good()) {
+                    string substr;
+                    getline(ss, substr, ',');
+                    v.push_back(substr);
+                  }
+          val1 = std::stod(v[0]);
+          //cout<<val1<<endl;
+          key++;
+          ui->widget_graph->graph(0)->addData(key,val1);
+          ui->widget_graph->xAxis->setRange(key,250,Qt::AlignRight);
+          ui->widget_graph->yAxis->rescale();
+          ui->widget_graph->replot();
+          v.clear();
+
+
+
         }
         myfile.close();
-      }
-    cout<<line<<endl;
+        //auto stop = high_resolution_clock::now();
+        //auto duration = duration_cast<milliseconds>(stop - start);
+        //cout << duration.count() << endl;
+     }
 
-    vector<string> v;
-    stringstream ss(line);
-    while (ss.good()) {
-              string substr;
-              getline(ss, substr, ',');
-              v.push_back(substr);
-            }
-    try{
-        val1 = std::stod(v[0]);
+  }
+
+
+   catch (...)  {
+        cout<<"exception happened with line "<<line<<endl;
+    }
+
+
+
+    //cout<<line<<endl;
+
+
+
+    //stringstream ss(line);
+//    while (ss.good()) {
+//              string substr;
+//              getline(ss, substr, ',');
+//              v.push_back(substr);
+//            }
+    //try{
+        //val1 = std::stod(v[0]);
         //cout<<val1<<endl;
-        if (key-lastPointKey >0.01) // at most add point every 10 ms
-        {
+        //if (key-lastPointKey >0.01) // at most add point every 10 ms
+        //{
                      //For testing
              //if(value0>0 && value0<10)
             //{
@@ -116,15 +160,16 @@ void MainWindow::realtimeDataSlot()
            // }
             //else  {value0=5;}
 
-            ui->widget_graph->graph(0)->addData(key,val1);
+            //ui->widget_graph->graph(0)->addData(key,val1);
+            //ui->widget_graph->graph(0)->
 
-            lastPointKey = key;
+            //lastPointKey = key;
 
-        }
-    }
-    catch (...) {
-      cout<<val1<<endl;
-    }
+        //}
+    //}
+   // catch (...) {
+      //cout<<val1<<endl;
+    //}
     //if (line==""){
         //cout<<"empty line";
     //}
@@ -134,8 +179,8 @@ void MainWindow::realtimeDataSlot()
     //textLabel->setText("Current:"+QString::number( value0 )); //Display the current value
          //ui->widget_graph->xAxis->setAutoTickStep(false); ////Set whether to automatically allocate tick spacing
     //ui->widget_graph->xAxis->setTickStep(0.5);// The size of the value is half of the y-axis, set the scale interval
-    ui->widget_graph->xAxis->setRange(key,250,Qt::AlignRight);
+    //ui->widget_graph->xAxis->setRange(key,250,Qt::AlignRight);
     //ui->widget_graph->yAxis->setRange(val1-20,val1+20);
     //ui->widget_graph->xAxis->setRange(0,50);
-    ui->widget_graph->replot();
+    //ui->widget_graph->replot();
 }
